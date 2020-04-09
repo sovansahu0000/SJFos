@@ -1,0 +1,138 @@
+/break_the_bond
+//jatt_james_bond
+#include<bits/stdc++.h>
+
+using namespace std;
+
+int l1(int n, vector < int > bt) {
+    int l = 0, polo = 0;
+    for (int i = 0; i < n; ++i) {
+        if (bt[i] > l) {
+            l = bt[i];
+            polo = i;
+        }
+    }
+    return polo;
+}
+
+int l2(int n, vector < int > bt) {
+    int l = 4748364, polo = 0;
+    for (int i = 0; i < n; ++i) {
+        if (bt[i] < l) {
+            l = bt[i];
+            polo = i;
+        }
+    }
+    return polo;
+}
+
+int main() {
+    int pps;
+    cout << "Enter the number of pps __";
+    cin >> pps;
+    vector < int > arrivalTime(pps);
+    vector < int > bt(pps);
+
+    cout << endl <<
+        "Enter the Arrival time of each process: -" << endl;
+
+    for (int i = 0; i < pps; ++i) {
+        cout << "Enter the arival time of P" << i << " process __";
+        cin >> arrivalTime[i];
+        bt[i] = arrivalTime[i] << 1;
+    }
+    for (int vv = 0; vv < 2; ++vv) {
+
+        if (!vv) {
+
+            vector < int > comT(pps);
+            vector < int > tat(pps);
+            vector < int > wtT(pps);
+            vector < int > temp = bt;
+            int exeTime {
+                0
+            };
+
+            cout << endl;
+
+            for (int i = 0; i < pps; ++i) {
+                int quant = l1(pps, temp);
+                comT[quant] = exeTime + bt[quant];
+                exeTime = comT[quant];
+                temp[quant] = -1;
+                tat[quant] = comT[quant] - arrivalTime[quant];
+                int sg = tat[quant] - bt[quant];
+                (sg < 0) ? sg = 0: sg;
+                wtT[quant] = sg;
+            }
+
+            int averagewtT {
+                0
+            };
+            int averagetat {
+                0
+            };
+            for (int i = 0; i < pps; ++i) {
+                cout << "Completion time of P" << i << " process is = " << comT[i] << ",  Turn Around Time = " << tat[i] << "  And Waiting Time = " << wtT[i] << endl;
+                averagewtT += wtT[i];
+                averagetat += tat[i];
+            }
+
+            cout << endl <<
+                "Average waiting time = " << ((float) averagewtT / pps) << endl;
+
+            cout << endl <<
+                "Average turnaround time = " << ((float) averagetat / pps) << endl;
+        }
+
+        //Now with Shortest Job First algo
+
+        if (vv) {
+            cout << endl <<
+                "Now implementing the with Shortest Job First" << endl;
+
+            vector < int > comT(pps);
+            vector < int > tat(pps);
+            vector < int > wtT(pps);
+            vector < int > temp = bt;
+            int exeTime {
+                0
+            };
+
+            cout << endl;
+
+            for (int i = 0; i < pps; ++i) {
+                int quant = l2(pps, temp);
+                comT[quant] = exeTime + bt[quant];
+                exeTime = comT[quant];
+                temp[quant] = 4748365;
+                tat[quant] = comT[quant] - arrivalTime[quant];
+                int sg = tat[quant] - bt[quant];
+                (sg < 0) ? sg = 0: sg;
+                wtT[quant] = sg;
+            }
+
+            int averagewtT {
+                0
+            };
+            int averagetat {
+                0
+            };
+
+            for (int i = 0; i < pps; ++i) {
+                cout << "Completion time of P" << i << " process is = " << comT[i] << ",  Turn Around Time = " << tat[i] << "  And Waiting Time = " << wtT[i] << endl;
+                averagewtT += wtT[i];
+                averagetat += tat[i];
+            }
+
+            cout << endl <<
+                "Average waiting time is " << ((float) averagewtT / pps) << endl;
+
+            cout << endl <<
+                "Average turnaround time  is " << ((float) averagetat / pps) << endl;
+        }
+
+    }
+
+    return 0;
+}
